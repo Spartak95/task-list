@@ -1,7 +1,10 @@
 package com.xcoder.tasklist.security;
 
-import com.xcoder.tasklist.domain.exception.ResourceNotFoundException;
+import java.io.IOException;
+
+import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +18,13 @@ public class JwtTokenFilter extends GenericFilterBean {
     private final JwtTokenProvider tokenProvider;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+        throws ServletException, IOException {
         String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
+
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            bearerToken = bearerToken.substring(7);
+        }
 
         if (bearerToken != null && tokenProvider.validateToken(bearerToken)) {
             try {
@@ -28,5 +36,7 @@ public class JwtTokenFilter extends GenericFilterBean {
             } catch (ResourceNotFoundException ignored) {
             }
         }
+
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

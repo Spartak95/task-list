@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/tasklist?currentSchema=tasklist
-    username: postgres
-    password: mysecretpassword
+    username: xcoder
+    password: secret
   sql:
     init:
       mode: always

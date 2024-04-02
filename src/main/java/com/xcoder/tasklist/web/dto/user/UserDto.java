@@ -10,8 +10,6 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class UserDto {
-    @NotNull(message = "Id must be not null.", groups = OnCreate.class)
-    private Long id;
     @NotNull(message = "Name must be not null.", groups = {OnCreate.class, OnUpdate.class})
     @Length(max = 255, message = "Name length must be smaller than 255 symbols",
         groups = {OnCreate.class, OnUpdate.class})
@@ -25,5 +23,5 @@ public class UserDto {
     private String password;
     @JsonProperty(access = Access.WRITE_ONLY)
     @NotNull(message = "Password configuration must be not null.", groups = OnCreate.class)
-    private String passwordConfiguration;
+    private String passwordConfirmation;
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 import javax.crypto.SecretKey;
 
-import com.xcoder.tasklist.domain.exception.AccessDeniedException;
 import com.xcoder.tasklist.domain.user.Role;
 import com.xcoder.tasklist.domain.user.User;
+import com.xcoder.tasklist.exception.AccessDeniedException;
 import com.xcoder.tasklist.service.UserService;
 import com.xcoder.tasklist.web.dto.auth.JwtResponse;
 import io.jsonwebtoken.Claims;
@@ -36,37 +36,42 @@ public class JwtTokenProvider {
     }
 
     public String createAccessToken(Long userId, String username, Set<Role> roles) {
-        Claims claims = Jwts.claims().subject(username).build(); // jwt payload
-        claims.put("id", userId);
-        claims.put("roles", resolveRoles(roles));
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getAccess());
+        Date nowDate = new Date();
+        Date expiryDate = new Date(nowDate.getTime() + jwtProperties.getAccess());
+
+        // jwt payload
+        Claims claims = Jwts.claims()
+            .subject(username)
+            .add("id", userId)
+            .add("roles", resolveRoles(roles))
+            .build();
 
         return Jwts.builder()
             .claims(claims)
-            .issuedAt(now)
-            .expiration(validity)
+            .issuedAt(nowDate)
+            .expiration(expiryDate)
             .signWith(key)
             .compact();
     }
 
     private List<String> resolveRoles(Set<Role> roles) {
-        return roles
-            .stream()
+        return roles.stream()
             .map(Enum::name)
             .toList();
     }
 
     public String createRefreshToken(Long userId, String username) {
-        Claims claims = Jwts.claims().subject(username).build();
-        claims.put("id", userId);
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getRefresh());
+        Date nowDate = new Date();
+        Date expiryDate = new Date(nowDate.getTime() + jwtProperties.getRefresh());
+        Claims claims = Jwts.claims()
+            .subject(username)
+            .add("id", userId)
+            .build();
 
         return Jwts.builder()
             .claims(claims)
-            .issuedAt(now)
-            .expiration(validity)
+            .issuedAt(nowDate)
+            .expiration(expiryDate)
             .signWith(key)
             .compact();
     }
@@ -88,11 +93,11 @@ public class JwtTokenProvider {
         return jwtResponse;
     }
 
-    public boolean validateToken(String refreshToken) {
+    public boolean validateToken(String token) {
         Jws<Claims> claims = Jwts.parser()
             .verifyWith(key)
             .build()
-            .parseSignedClaims(refreshToken);
+            .parseSignedClaims(token);
 
         return !claims.getPayload().getExpiration().before(new Date());
     }
@@ -103,8 +108,7 @@ public class JwtTokenProvider {
             .build()
             .parseSignedClaims(refreshToken)
             .getPayload()
-            .get("id")
-            .toString();
+            .get("id", String.class);
     }
 
     public Authentication getAuthentication(String token) {

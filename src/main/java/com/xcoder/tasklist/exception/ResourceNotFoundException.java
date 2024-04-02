@@ -1,4 +1,4 @@
-package com.xcoder.tasklist.domain.exception;
+package com.xcoder.tasklist.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
