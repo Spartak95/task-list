@@ -10,6 +10,7 @@ import com.xcoder.tasklist.exception.ResourceMappingException;
 import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
 
@@ -74,7 +76,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionBody handleException() {
+    public ExceptionBody handleException(Exception e) {
+        log.error(e.getMessage(), e);
         return new ExceptionBody("Internal Server Error.");
     }
 }

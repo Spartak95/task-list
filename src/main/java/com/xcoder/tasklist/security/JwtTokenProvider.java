@@ -1,5 +1,7 @@
 package com.xcoder.tasklist.security;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +38,7 @@ public class JwtTokenProvider {
     }
 
     public String createAccessToken(Long userId, String username, Set<Role> roles) {
-        Date nowDate = new Date();
-        Date expiryDate = new Date(nowDate.getTime() + jwtProperties.getAccess());
+        Instant expirationDate = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
 
         // jwt payload
         Claims claims = Jwts.claims()
@@ -48,8 +49,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
             .claims(claims)
-            .issuedAt(nowDate)
-            .expiration(expiryDate)
+            .expiration(Date.from(expirationDate))
             .signWith(key)
             .compact();
     }
@@ -61,8 +61,8 @@ public class JwtTokenProvider {
     }
 
     public String createRefreshToken(Long userId, String username) {
-        Date nowDate = new Date();
-        Date expiryDate = new Date(nowDate.getTime() + jwtProperties.getRefresh());
+        Instant expirationDate = Instant.now().plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
+
         Claims claims = Jwts.claims()
             .subject(username)
             .add("id", userId)
@@ -70,8 +70,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
             .claims(claims)
-            .issuedAt(nowDate)
-            .expiration(expiryDate)
+            .expiration(Date.from(expirationDate))
             .signWith(key)
             .compact();
     }

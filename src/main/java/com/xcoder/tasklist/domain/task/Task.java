@@ -1,5 +1,6 @@
 package com.xcoder.tasklist.domain.task;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Table(name = "tasks")
 @Getter
 @Setter
-public class Task {
+public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,5 +1,6 @@
 package com.xcoder.tasklist.domain.user;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
