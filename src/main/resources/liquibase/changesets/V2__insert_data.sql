@@ -1,6 +1,6 @@
 insert into users (name, username, password)
-values ('John Doe', 'johndoe@gmail.com', '$2a$10$I3zClVEOWXoICS2DdGQl/OSPVHJWnTZQhdoa748m9Ksag5OpFjUaK'),
-       ('Mike Smith', 'mikesmith@gmail.com', '$2a$10$I3zClVEOWXoICS2DdGQl/OSPVHJWnTZQhdoa748m9Ksag5OpFjUaK');
+values ('John Doe', 'johndoe@gmail.com', '$2a$12$gYq8GR78WydZRKkT51y0yOAD4WO6EO3QQJb0C.orz4mCQr/jEc1C6'),
+       ('Mike Smith', 'mikesmith@gmail.com', '$2a$12$gYq8GR78WydZRKkT51y0yOAD4WO6EO3QQJb0C.orz4mCQr/jEc1C6');
 
 insert into tasks (title, description, status, expiration_date)
 values ('By cheese', null, 'TODO', '2023-01-29 12:00:30'),

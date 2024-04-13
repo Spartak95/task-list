@@ -12,6 +12,8 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @Schema(description = "User Dto")
 public class UserDto {
+    @NotNull(message = "Id must be not null.", groups = OnCreate.class)
+    private Long id;
     @Schema(description = "User name", example = "John Doe")
     @NotNull(message = "Name must be not null.", groups = {OnCreate.class, OnUpdate.class})
     @Length(max = 255, message = "Name length must be smaller than 255 symbols",
