@@ -1,8 +1,11 @@
 package com.xcoder.tasklist.web.dto.task;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.xcoder.tasklist.domain.task.Status;
 import com.xcoder.tasklist.web.dto.validation.OnCreate;
 import com.xcoder.tasklist.web.dto.validation.OnUpdate;
@@ -38,4 +41,7 @@ public class TaskDto {
     @DateTimeFormat(iso = ISO.TIME)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime expirationDate;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    private List<String> images;
 }

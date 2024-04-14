@@ -1,8 +1,13 @@
 package com.xcoder.tasklist.domain.task;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,6 +23,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Task implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 8367173412179037519L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,4 +35,9 @@ public class Task implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private Status status;
     private LocalDateTime expirationDate;
+
+    @Column(name = "image")
+    @CollectionTable(name = "tasks_images")
+    @ElementCollection
+    private List<String> images;
 }

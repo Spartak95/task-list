@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import com.xcoder.tasklist.domain.user.Role;
 import com.xcoder.tasklist.domain.user.User;
 import com.xcoder.tasklist.exception.AccessDeniedException;
+import com.xcoder.tasklist.properties.JwtProperties;
 import com.xcoder.tasklist.service.UserService;
 import com.xcoder.tasklist.web.dto.auth.JwtResponse;
 import io.jsonwebtoken.Claims;

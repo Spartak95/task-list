@@ -2,18 +2,18 @@ package com.xcoder.tasklist.config;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import com.xcoder.tasklist.properties.MinioProperties;
 import com.xcoder.tasklist.security.JwtTokenFilter;
 import com.xcoder.tasklist.security.JwtTokenProvider;
+import io.minio.MinioClient;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -27,8 +27,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
-@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class ApplicationConfig {
+
+    @Bean
+    public MinioClient minioClient(MinioProperties minioProperties) {
+        return MinioClient.builder()
+            .endpoint(minioProperties.getUrl())
+            .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
+            .build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

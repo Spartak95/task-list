@@ -2,10 +2,12 @@ package com.xcoder.tasklist.service.impl;
 
 import java.util.List;
 
+import com.xcoder.tasklist.domain.task.TaskImage;
 import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import com.xcoder.tasklist.domain.task.Status;
 import com.xcoder.tasklist.domain.task.Task;
 import com.xcoder.tasklist.repository.TaskRepository;
+import com.xcoder.tasklist.service.ImageService;
 import com.xcoder.tasklist.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
+    private final ImageService imageService;
     private final TaskRepository taskRepository;
 
     @Override
@@ -62,5 +65,15 @@ public class TaskServiceImpl implements TaskService {
     @CacheEvict(value = "TaskService::getById", key = "#id")
     public void delete(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = "TaskService::getById", key = "#id")
+    public void uploadImage(Long id, TaskImage image) {
+        Task task = getById(id);
+        String filename = imageService.upload(image);
+        task.getImages().add(filename);
+        taskRepository.save(task);
     }
 }

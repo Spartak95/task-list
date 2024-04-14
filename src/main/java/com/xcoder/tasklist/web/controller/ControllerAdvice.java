@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.xcoder.tasklist.exception.AccessDeniedException;
 import com.xcoder.tasklist.exception.ExceptionBody;
+import com.xcoder.tasklist.exception.ImageUpLoadException;
 import com.xcoder.tasklist.exception.ResourceMappingException;
 import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -79,5 +80,11 @@ public class ControllerAdvice {
     public ExceptionBody handleException(Exception e) {
         log.error(e.getMessage(), e);
         return new ExceptionBody("Internal Server Error.");
+    }
+
+    @ExceptionHandler(ImageUpLoadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUpLoadException(ImageUpLoadException e) {
+        return new ExceptionBody(e.getMessage());
     }
 }
