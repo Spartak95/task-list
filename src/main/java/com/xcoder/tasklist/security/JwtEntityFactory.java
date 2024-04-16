@@ -14,7 +14,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class JwtEntityFactory {
 
     public static JwtEntity create(User user) {
-        return new JwtEntity(user.getId(), user.getUsername(), user.getName(), user.getPassword(), mapToGrantedAuthorities(user.getRoles()));
+        return new JwtEntity(user.getId(), user.getUsername(), user.getName(), user.getPassword(),
+                             mapToGrantedAuthorities(user.getRoles()));
     }
 
     private static Collection<? extends GrantedAuthority> mapToGrantedAuthorities(Set<Role> roles) {

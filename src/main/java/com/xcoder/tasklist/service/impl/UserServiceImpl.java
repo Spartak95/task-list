@@ -2,9 +2,9 @@ package com.xcoder.tasklist.service.impl;
 
 import java.util.Set;
 
-import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import com.xcoder.tasklist.domain.user.Role;
 import com.xcoder.tasklist.domain.user.User;
+import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import com.xcoder.tasklist.repository.UserRepository;
 import com.xcoder.tasklist.service.UserService;
 import lombok.RequiredArgsConstructor;
