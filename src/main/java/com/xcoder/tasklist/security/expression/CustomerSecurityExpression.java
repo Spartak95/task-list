@@ -26,11 +26,11 @@ public class CustomerSecurityExpression {
         for (Role role : roles) {
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
 
-            if(authentication.getAuthorities().contains(authority)) {
+            if (authentication.getAuthorities().contains(authority)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 

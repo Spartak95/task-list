@@ -2,10 +2,10 @@ package com.xcoder.tasklist.service.impl;
 
 import java.util.List;
 
-import com.xcoder.tasklist.domain.task.TaskImage;
-import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import com.xcoder.tasklist.domain.task.Status;
 import com.xcoder.tasklist.domain.task.Task;
+import com.xcoder.tasklist.domain.task.TaskImage;
+import com.xcoder.tasklist.exception.ResourceNotFoundException;
 import com.xcoder.tasklist.repository.TaskRepository;
 import com.xcoder.tasklist.service.ImageService;
 import com.xcoder.tasklist.service.TaskService;
