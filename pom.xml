@@ -31,6 +31,7 @@
         <checkstyle.version>3.2.2</checkstyle.version>
         <graphql-java-servlet.version>15.2.0</graphql-java-servlet.version>
         <graphql-java-extended-scalars.version>2023-01-24T02-11-56-babda5f</graphql-java-extended-scalars.version>
+        <jacoco.version>0.8.11</jacoco.version>
     </properties>
 
     <dependencies>
@@ -223,6 +224,49 @@
                         <configuration>
                             <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
                             <suppressionsLocation>checkstyle.xml</suppressionsLocation>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit implementation="org.jacoco.report.check.Limit">
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.60</minimum>
+                                        </limit>
+                                    </limits>
+                                    <includes>
+                                        <include>com.xcoder.tasklist.service.impl</include>
+                                    </includes>
+                                </rule>
+                            </rules>
                         </configuration>
                     </execution>
                 </executions>
