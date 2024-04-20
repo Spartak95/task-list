@@ -81,8 +81,8 @@ public class UserController {
     @Operation(summary = "Add task to user")
     @PreAuthorize("@customerSecurityExpression.canAccessUser(#id)")
     public TaskDto createTask(@PathVariable @Argument Long id,
-                              @Validated(OnCreate.class) @RequestBody @Argument TaskDto taskDto) {
-        Task task = taskMapper.toEntity(taskDto);
+                              @Validated(OnCreate.class) @RequestBody @Argument TaskDto dto) {
+        Task task = taskMapper.toEntity(dto);
         Task createdTask = taskService.create(task, id);
         return taskMapper.toDto(createdTask);
     }

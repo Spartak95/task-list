@@ -16,7 +16,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String username;
     private String password;
@@ -43,8 +45,11 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @CollectionTable(name = "users_tasks")
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "task_id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "users_tasks",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "task_id")
+    )
     private List<Task> tasks;
 }

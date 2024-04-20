@@ -17,10 +17,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Data
-@Schema(description = "Request for tsk")
+@Schema(description = "Request for task")
 public class TaskDto {
     @Schema(description = "Task id", example = "1")
-    @NotNull(message = "Id must be not null.", groups = OnCreate.class)
+    @NotNull(message = "Id must be not null.", groups = OnUpdate.class)
     private Long id;
 
     @Schema(description = "Task title", example = "Go shopping")
