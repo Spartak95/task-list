@@ -1,5 +1,6 @@
 package com.xcoder.tasklist.service;
 
+import java.time.Duration;
 import java.util.List;
 
 import com.xcoder.tasklist.domain.task.Task;
@@ -9,6 +10,8 @@ public interface TaskService {
     Task getById(Long id);
 
     List<Task> getAllByUserId(Long id);
+
+    List<Task> getAllSoonTasks(Duration duration);
 
     Task update(Task task);
 

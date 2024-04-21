@@ -7,15 +7,19 @@ import com.xcoder.tasklist.repository.UserRepository;
 import com.xcoder.tasklist.security.JwtTokenProvider;
 import com.xcoder.tasklist.security.JwtUserDetailsService;
 import com.xcoder.tasklist.service.ImageService;
+import com.xcoder.tasklist.service.MailService;
 import com.xcoder.tasklist.service.impl.AuthServiceImpl;
 import com.xcoder.tasklist.service.impl.ImageServiceImpl;
+import com.xcoder.tasklist.service.impl.MailServiceImpl;
 import com.xcoder.tasklist.service.impl.TaskServiceImpl;
 import com.xcoder.tasklist.service.impl.UserServiceImpl;
+import freemarker.template.Configuration;
 import io.minio.MinioClient;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -67,9 +71,25 @@ public class TestConfig {
     }
 
     @Bean
+    public Configuration configuration() {
+        return Mockito.mock(Configuration.class);
+    }
+
+    @Bean
+    public JavaMailSender mailSender() {
+        return Mockito.mock(JavaMailSender.class);
+    }
+
+    @Bean
+    @Primary
+    public MailService mailService() {
+        return new MailServiceImpl(mailSender(), configuration());
+    }
+
+    @Bean
     @Primary
     public UserServiceImpl userService(final UserRepository userRepository) {
-        return new UserServiceImpl(userRepository, testPasswordEncoder());
+        return new UserServiceImpl(mailService(), userRepository, testPasswordEncoder());
     }
 
     @Bean
